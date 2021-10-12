@@ -128,6 +128,86 @@ def get_longest_digit_count_desc(lista):
                 seq1.append(lista[start1:(start1 + count + 1)])
     return seq1
 
+def get_longest_all_primes(lista):
+    '''
+    Descriere: Functia determina cea mai lunga secventa de numere prime.
+    Input: o lista de numere naturale
+    Output: secventa/secventele cele mai lungi de numere prime.
+    '''
+    seq2 = []
+    ccount = 0
+    starti = 0
+    cstarti = 0
+    count = 0
+    for i in range(len(lista)):
+        ok = True
+        nr = lista[i]
+        if nr == 0 or nr == 1:
+            ok = False
+        if nr == 2:
+            ok = True
+        else:
+            for j in range(2, nr - 1):
+                if nr % j == 0:
+                    ok = False
+        if ok == True:
+            ccount += 1
+            if ccount == 1:
+                cstarti = i
+            if ccount > count:
+                count = ccount
+                starti = cstarti
+        else:
+            ccount = 0
+    if count == 0:
+        return []
+    seq2.append(lista[starti:(starti + count)])
+    a = starti + count + 1
+    count1 = 0
+    start1 = 0
+    cstart1 = 0
+    ccount1 = 0
+    for i in range(a, len(lista)):
+        nr = lista[i]
+        if nr == 1 or nr == 0:
+            ok == False
+        ok = True
+        if nr == 2:
+            ok = True
+        else:
+            for j in range(2, nr - 1):
+                if nr % j == 0:
+                    ok = False
+        if ok == True:
+            ccount1 += 1
+            if ccount1 == 1:
+                cstart1 = i
+            if ccount1 > count1:
+                count1 = ccount1
+                start1 = cstart1
+        else:
+            ccount1 = 0
+            count1 = 0
+            cstart1 = 0
+            start1 = 0
+
+        if count1 == count:
+            seq2.append(lista[start1:(start1 + count1)])
+        if count == 0:
+            return []
+    return seq2
+
+
+def test_get_longest_all_primes():
+    l = [4, 3, 5, 7, 8, 16, 222]
+    l1 = [3, 5, 7]
+    assert get_longest_all_primes(l)[0] == l1
+    l = [8, 13, 17, 19, 8, 2, 3, 7]
+    l1 = [13, 17, 19]
+    l2 = [2, 3, 7]
+    assert get_longest_all_primes(l)[0] == l1
+    assert get_longest_all_primes(l)[1] == l2
+
 
 def test_get_longest_sorted_asc():
     l = [9, 5, 6, 7, 8, 3, 4]
@@ -165,12 +245,14 @@ def printMeniu():
     print("1.Citire date")
     print("2.Determinare cea mai lunga subsecventa cu numere in ordine crescatoare.")
     print("3.Determinare cea mai lunga subsecventa cu numarul de cifre in ordine descrescaoare.")
-    print("4.Iesire")
+    print("4.Determinare cea mai lunga subsecventa de numere prime")
+    print("5.Iesire")
 
 
 def run():
     test_get_longest_sorted_asc()
     test_get_longest_digit_count_desc()
+    test_get_longest_all_primes()
     lista = []
     printMeniu()
     while True:
@@ -202,7 +284,17 @@ def run():
                 for elem in lst1:
                     print(elem)
             get_longest_digit_count_desc(lista)
-        elif o == 4:
+        elif o== 4:
+            lst2 = get_longest_all_primes(lista)
+            if len(lst2) == 0:
+                print("nu exista secvente de numere prime.")
+            if len(lst2) == 1:
+                print(lst2[0])
+            else:
+                for elem in lst2:
+                    print(elem)
+
+        elif o == 5:
             print("Optiune gresita!Reincercati!")
             break
 
